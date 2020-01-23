@@ -1,4 +1,4 @@
-var Card = require('../controllers/card')
+var Card = require('../models/card')
 
 module.exports.createCard = (cardData) => {
     const card = new Card(cardData)
@@ -9,5 +9,5 @@ module.exports.createCard = (cardData) => {
 }
 
 module.exports.getAllCards = (req, res) => {
-
+    Card.find({}, function (err, data) {res.send(data)});
 }
