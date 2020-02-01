@@ -26,7 +26,7 @@ module.exports.editCard = (req, res) => {
 module.exports.getCard = (req, res) => {
     Card.findById(req.params.id, function (err, card){
         if (err) console.log(`Error with data ${err}`)
-        if (!err) res.status(404).send('Card not found')
+        if (!card) res.status(404).send('Card not found')
         else res.send(card)
     })
 } 
