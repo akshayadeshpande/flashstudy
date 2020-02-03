@@ -1,41 +1,38 @@
 <template>
   <div>
-    <div class="card">
-      <b-card
-        title="Card Title"
-        img-src="https://picsum.photos/600/300/?image=25"
-        img-alt="Image"
-        img-top
-        tag="article"
-        style="max-width: 20rem;"
-        class="mb-2"
-      >
-        <b-card-text>
-          Some quick example text to build on the card title and make up the bulk of the card's content.
-        </b-card-text>
-
-        <b-button href="#" variant="primary">Go somewhere</b-button>
-      </b-card>    
-    </div>
     <div class='cards'>
-      <li v-for="card in cards" v-bind:key="card.id">
-        {{ card.title }}
+      <li v-for="card in this.cards" v-bind:key="card._id">
+          <staticCard  v-bind:question="card.question"
+          v-bind:answer="card.answer" :id='card._id'>
+          </staticCard>
         </li>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import staticCard from './StaticCard'
+
 export default {
-  name: 'Card',
+  name: 'CardList',
+  components: {
+    staticCard
+  },
   data () {
     return {
-      cards: [
-        { id: 1, title: 'My journey with Vue' },
-        { id: 2, title: 'Blogging with Vue' },
-        { id: 3, title: 'Why Vue is so fun' }
-      ]
+      cards: null,
+      errored: false
     }
+  },
+  mounted () {
+    axios.get('http://127.0.0.1:10000/cards')
+      .then(response => {
+        this.cards = response.data
+      }).catch(error => {
+        console.log(error)
+        this.errored = true
+      })
   }
 }
 </script>

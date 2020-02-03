@@ -11,13 +11,11 @@
 
 <script>
 
-import CardList from '@/components/CardList'
 import Hello from '@/components/Hello'
 
 export default {
   name: 'app',
   components: {
-    CardList,
     Hello
   }
 }
