@@ -1,5 +1,5 @@
 <template>
-    <form class="vue-form" method="post" action='http://127.0.0.1:10000/cards'>
+    <form class="vue-form " method="post" action='http://127.0.0.1:10000/cards'>
 
         <fieldset>
         <legend>
@@ -53,8 +53,10 @@ export default {
 </script>
 
 <style>
-
 .vue-form {
+  position: fixed;
+  top: 0px;
+  z-index: 1000;
   font-size: 16px;
   width: 40%;
   padding: 15px 30px;
@@ -62,6 +64,14 @@ export default {
   margin: 50px auto;
   background-color: #fff;
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
+  animation:animatetop 1s;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@keyframes animatetop{
+  from {top:-300px; opacity:0} 
+  to {top: 0; opacity:1}
 }
 
 fieldset {
