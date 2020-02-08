@@ -1,11 +1,15 @@
 <template>
   <div>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <div class='cards'>
-      <li v-for="card in this.cards" v-bind:key="card._id">
+        <li v-for="card in this.cards" v-bind:key="card._id">
           <staticCard  v-bind:question="card.question"
-          v-bind:answer="card.answer" :id='card._id'>
+          v-bind:answer="card.answer" v-bind:id='card._id'>
           </staticCard>
         </li>
+        <addCardForm class="new-card-form" v-if="visibleForm" v-on:closeForm=closeForm()></addCardForm>
+        <fab :actions="fabActions" v-on:newCard=openForm()></fab>
     </div>
   </div>
 </template>
@@ -13,16 +17,31 @@
 <script>
 import axios from 'axios'
 import staticCard from './StaticCard'
+import fab from 'vue-fab'
+import addCardForm from './AddCardForm'
 
 export default {
   name: 'CardList',
   components: {
-    staticCard
+    staticCard,
+    fab,
+    addCardForm
   },
   data () {
     return {
       cards: null,
-      errored: false
+      errored: false,
+      visibleForm: false,
+      fabActions: [
+        {
+          name: 'newQuiz',
+          icon: 'create_new_folder'
+        },
+        {
+          name: 'newCard',
+          icon: 'fiber_new'
+        }
+      ]
     }
   },
   mounted () {
@@ -33,6 +52,14 @@ export default {
         console.log(error)
         this.errored = true
       })
+  },
+  methods: {
+    closeForm: function () {
+      this.visibleForm = false
+    },
+    openForm: function () {
+      this.visibleForm = true
+    }
   }
 }
 </script>
@@ -56,5 +83,9 @@ li {
 
 a {
   color: #35495E;
+}
+
+.new-card-form {
+  padding-top: 30px  
 }
 </style>

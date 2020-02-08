@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'staticCard',
+  name: 'StaticCard',
   props: ['id', 'question', 'answer']
 }
 </script>
@@ -33,10 +33,10 @@ a:hover {
   -ms-flex-pack: center;
   justify-content: center;
   overflow: hidden;
-  padding: 40px 40px 40px 120px;
+  padding: 40px 40px 40px 40px;
   cursor: pointer;
   background-color: #fff;
-  border-radius: 4px;
+  border-radius: 10px;
   box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
   transition-property: color, background-color, box-shadow, transform;
   transition-duration: 0.15s;
@@ -50,9 +50,6 @@ a:hover {
   font-weight: 600;
   margin: 10px;
   letter-spacing: 0.025em;
-}
-.staticCard > h2:after {
-  content: " \279C";
 }
 
 .staticCard > p {

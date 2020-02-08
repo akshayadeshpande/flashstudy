@@ -4,6 +4,7 @@ module.exports.createCard = (req, res) => {
     var card = new Card(req.body)
     // All db operatons are async and need to supply a callback function
     card.save(function (err, card) {
+        console.log(req)
         if (err) res.status(400).send('Invalid arguments.')
         else res.sendStatus(201) 
     })

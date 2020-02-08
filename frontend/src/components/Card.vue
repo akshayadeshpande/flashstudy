@@ -25,7 +25,7 @@ export default {
     }
   },
   mounted () {
-    axios.get('http://127.0.0.1:10000/cards/5e299809e9a3c22a6c23bc34')
+    axios.get(`http://127.0.0.1:10000/cards/${this.$route.params.cardId}`)
       .then(response => {
         this.id = response.data.id
         this.question = response.data.question
