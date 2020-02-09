@@ -19,6 +19,10 @@ router.get('/cards/:id', function(req, res, next) {
     cardController.getCard(req, res)
 })
 
+router.delete('/cards/:id', function(req, res, next) {
+    cardController.deleteCard(req, res)
+})
+
 router.post('/quizzes', function(req, res, next) {
     quizController.startQuiz(req, res)
 })

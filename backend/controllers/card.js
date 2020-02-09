@@ -4,7 +4,6 @@ module.exports.createCard = (req, res) => {
     var card = new Card(req.body)
     // All db operatons are async and need to supply a callback function
     card.save(function (err, card) {
-        console.log(req)
         if (err) res.status(400).send('Invalid arguments.')
         else res.sendStatus(201) 
     })
@@ -31,3 +30,11 @@ module.exports.getCard = (req, res) => {
         else res.send(card)
     })
 } 
+
+module.exports.deleteCard = (req, res) => {
+    Card.findByIdAndDelete(req.params.id, {"useFindAndModify": false }, function (err, card){
+        if (err) console.log(`Error with data ${err}`)
+        if (!card) res.status(404).send('Card not found')
+        else res.sendStatus(200)
+    })
+}

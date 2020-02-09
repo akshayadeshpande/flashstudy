@@ -8,7 +8,7 @@
         <addCardForm class="new-card-form" v-if="visibleForm" v-on:closeForm=closeForm() 
           :editCard=true :id=this.id :q=this.question :a=this.answer></addCardForm>
         <button @click=openForm()>Edit </button>
-        <button>Delete </button>
+        <button @click=deleteCard()>Delete </button>
       </div>
     </div>
 </template>>
@@ -49,6 +49,15 @@ export default {
     },
     openForm: function () {
       this.visibleForm = true
+    },
+    deleteCard: function () {
+      axios.delete(`/cards/${this.$route.params.cardId}`)
+        .then(response => {
+          this.$router.push({name: 'CardList'})
+        }).catch(error => {
+          console.log(error)
+          this.errored = true
+        })
     }
   }
 }
