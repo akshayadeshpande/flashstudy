@@ -1,39 +1,55 @@
 <template>
-    <div>
-      <vue-flashcard 
+    <div style='text-align: center'>
+      <vue-flashcard style="width: 50%; display: inline-block; position: relative"
         v-bind:front="question"
         v-bind:back="answer">
       </vue-flashcard>
+      <div>
+        <addCardForm class="new-card-form" v-if="visibleForm" v-on:closeForm=closeForm() 
+          :editCard=true :id=this.id :q=this.question :a=this.answer></addCardForm>
+        <button @click=openForm()>Edit </button>
+        <button>Delete </button>
+      </div>
     </div>
 </template>>
 
 <script>
 import vueFlashcard from 'vue-flashcard'
 import axios from 'axios'
+import addCardForm from './AddCardForm'
 
 export default {
   name: 'Flashcard',
   components: {
-    vueFlashcard
+    vueFlashcard,
+    addCardForm
   },
   data () {
     return {
-      id: null,
+      id: this.$route.params.cardId,
       question: null,
       answer: null,
-      errored: false
+      errored: false,
+      visibleForm: false
     }
   },
   mounted () {
-    axios.get(`http://127.0.0.1:10000/cards/${this.$route.params.cardId}`)
+    axios.get(`/cards/${this.$route.params.cardId}`)
       .then(response => {
-        this.id = response.data.id
         this.question = response.data.question
         this.answer = response.data.answer
       }).catch(error => {
         console.log(error)
         this.errored = true
       })
+  },
+  methods: {
+    closeForm: function () {
+      this.visibleForm = false
+    },
+    openForm: function () {
+      this.visibleForm = true
+    }
   }
 }
 </script>
@@ -56,10 +72,6 @@ li {
 
 a {
   color: #35495E;
-}
-
-.Flashcard {
-  background-color: white
 }
 
 .rounded {

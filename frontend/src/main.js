@@ -6,7 +6,7 @@ import router from './router'
 import axios from 'axios'
 
 Vue.config.productionTip = false
-axios.defaults.baseURL = 'http:127.0.0.1:10001'
+axios.defaults.baseURL = 'http://127.0.0.1:10000'
 
 /* eslint-disable no-new */
 new Vue({

@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <header>
-      <span>FLashstudy</span>
+      <span>
+        Flashstudy
+        <button @click=myCards>My Cards</button>
+      </span>
     </header>
     <main>
       <router-view></router-view>
@@ -17,6 +20,11 @@ export default {
   name: 'app',
   components: {
     Hello
+  },
+  methods: {
+    myCards: function () {
+      this.$router.push({name: 'CardList'})
+    }
   }
 }
 </script>
@@ -40,7 +48,7 @@ main {
 
 header {
   margin: 0;
-  height: 56px;
+  height: 112px;
   padding: 0 16px 0 24px;
   background-color: #35495E;
   color: #ffffff;

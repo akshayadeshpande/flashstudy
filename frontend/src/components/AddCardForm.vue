@@ -3,7 +3,7 @@
 
         <fieldset>
         <legend>
-          <h2>Add a new card <button v-on:click="$emit('closeForm')">-</button> </h2>         
+          <h2>Add a new card <button v-on:click="$emit('closeForm')">X</button> </h2>         
         </legend>
         <div>
             <label class="label" for="question">Front</label>
@@ -23,21 +23,30 @@
 
 <script>
 import axios from 'axios'
-// import router from '../router'
 
 export default {
   name: 'AddCardButton',
+  props: ['editCard', 'id', 'q', 'a'],
   data: () => {
     return {
-      id: null,
       question: null,
       answer: null,
       errored: false
     }
   },
+  mounted () {
+    this.question = this.q
+    this.answer = this.a
+  },
   methods: {
     submit: function () {
-      axios.post('http://127.0.0.1:10000/cards', {
+      var url = null
+      if (this.editCard) {
+        url = `/cards/${this.id}`
+      } else {
+        url = '/cards'
+      }
+      axios.post(url, {
         question: this.question,
         answer: this.answer
       })

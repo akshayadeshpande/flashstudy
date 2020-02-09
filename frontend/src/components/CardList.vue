@@ -45,7 +45,7 @@ export default {
     }
   },
   mounted () {
-    axios.get('http://127.0.0.1:10000/cards')
+    axios.get('/cards')
       .then(response => {
         this.cards = response.data
       }).catch(error => {
