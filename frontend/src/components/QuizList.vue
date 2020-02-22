@@ -7,6 +7,7 @@
           <staticCard  v-bind:question="card.question"
           v-bind:answer="card.answer" v-bind:id='card._id'>
           </staticCard>
+          <h1>dadsadsadsadA</h1>
         </li>
         <addCardForm class="new-card-form" v-if="visibleForm" v-on:closeForm=closeForm()></addCardForm>
         <fab :actions="fabActions" @newCard=openForm() @newQuiz=startQuiz()></fab>
@@ -66,16 +67,10 @@ export default {
       })
         .then(response => {
           console.log(response)
-          this.$router.push({ name: 'Quiz', params: {quizId: response.data} })
         }).catch(error => {
           console.log(error)
           this.errored = true
         })
-    },
-    getRandimInt: function (min, max) {
-      min = Math.ceil(min)
-      max = Math.floor(max)
-      return Math.floor(Math.random() * (max - min)) + min
     }
   }
 }

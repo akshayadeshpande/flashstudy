@@ -4,6 +4,7 @@
       <span>
         Flashstudy
         <button @click=myCards>My Cards</button>
+        <button @click=myQuizzes>My Quizzes</button>
       </span>
     </header>
     <main>
@@ -21,9 +22,19 @@ export default {
   components: {
     Hello
   },
+  data () {
+    return {
+      errored: null
+    }
+  },
   methods: {
     myCards: function () {
       this.$router.push({name: 'CardList'})
+        .catch(err => { this.errored = err })
+    },
+    myQuizzes: function () {
+      this.$router.push({name: 'QuizList'})
+        .catch(err => { this.errored = err })
     }
   }
 }
