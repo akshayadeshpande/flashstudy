@@ -1,12 +1,17 @@
 <template>
   <div>
     <div class='quiz' style='text-align: center'>
-      <button v-if="this.currentIndex != 0" @click="previous()">&larr;</button>
-      <vue-flashcard v-if="this.cards" style="width: 50%; display: inline-block; position: relative"
+      <vue-flashcard ref="vueCard" v-if="this.cards" style="width: 50%; display: inline-block; position: relative"
         v-bind:front="this.cards[this.currentIndex].question"
         v-bind:back="this.cards[this.currentIndex].answer">
       </vue-flashcard>
-      <button v-if="this.currentIndex != this.cards.length" @click="next()">&rarr;</button>
+    </div>
+    <div>
+      <button @click=incorrect()>Wrong </button>
+      <button @click=correct()>Correct </button>
+    </div>
+    <div>
+      <button @click=endQuiz()>End Quiz </button>
     </div>
   </div>
 </template>
@@ -14,29 +19,20 @@
 <script>
 import axios from 'axios'
 import vueFlashcard from 'vue-flashcard'
-import fab from 'vue-fab'
 
 export default {
   name: 'Quiz',
   components: {
-    vueFlashcard,
-    fab
+    vueFlashcard
   },
   data () {
     return {
+      id: null,
       cards: null,
       errored: false,
       currentIndex: 0,
-      fabActions: [
-        {
-          name: 'newQuiz',
-          icon: 'create_new_folder'
-        },
-        {
-          name: 'newCard',
-          icon: 'fiber_new'
-        }
-      ]
+      correctQ: [],
+      incorrectQ: []
     }
   },
   mounted () {
@@ -64,10 +60,33 @@ export default {
       return array
     },
     next: function () {
-      this.currentIndex++
+      if (this.currentIndex === this.cards.length - 1) {
+        this.endQuiz()
+      } else {
+        this.currentIndex++
+        // Ensures the card is reset to the original view
+        this.$refs.vueCard.isToggle = false
+      }
     },
-    previous: function () {
-      this.currentIndex--
+    correct: function () {
+      this.correctQ.push(this.cards[this.currentIndex]._id)
+      this.next()
+    },
+    incorrect: function () {
+      this.incorrectQ.push(this.cards[this.currentIndex]._id)
+      this.next()
+    },
+    endQuiz: function () {
+      axios.post(`/quizzes/${this.$route.params.quizId}`, {
+        correctScore: this.correctQ.length,
+        incorrectScore: this.incorrectQ.length
+      })
+        .then(response => {
+          this.$router.push({name: 'QuizList'})
+        }).catch(error => {
+          console.log(error)
+          this.errored = true
+        })
     }
   }
 }

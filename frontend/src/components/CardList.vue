@@ -8,40 +8,26 @@
           v-bind:answer="card.answer" v-bind:id='card._id'>
           </staticCard>
         </li>
-        <addCardForm class="new-card-form" v-if="visibleForm" v-on:closeForm=closeForm()></addCardForm>
-        <fab :actions="fabActions" @newCard=openForm() @newQuiz=startQuiz()></fab>
     </div>
+    <quickMenu></quickMenu>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import staticCard from './StaticCard'
-import fab from 'vue-fab'
-import addCardForm from './AddCardForm'
+import quickMenu from './QuickMenu'
 
 export default {
   name: 'CardList',
   components: {
     staticCard,
-    fab,
-    addCardForm
+    quickMenu
   },
   data () {
     return {
       cards: null,
-      errored: false,
-      visibleForm: false,
-      fabActions: [
-        {
-          name: 'newQuiz',
-          icon: 'create_new_folder'
-        },
-        {
-          name: 'newCard',
-          icon: 'fiber_new'
-        }
-      ]
+      errored: false
     }
   },
   mounted () {
@@ -52,31 +38,6 @@ export default {
         console.log(error)
         this.errored = true
       })
-  },
-  methods: {
-    closeForm: function () {
-      this.visibleForm = false
-    },
-    openForm: function () {
-      this.visibleForm = true
-    },
-    startQuiz: function () {
-      axios.post('/quizzes', {
-        date: new Date()
-      })
-        .then(response => {
-          console.log(response)
-          this.$router.push({ name: 'Quiz', params: {quizId: response.data} })
-        }).catch(error => {
-          console.log(error)
-          this.errored = true
-        })
-    },
-    getRandimInt: function (min, max) {
-      min = Math.ceil(min)
-      max = Math.floor(max)
-      return Math.floor(Math.random() * (max - min)) + min
-    }
   }
 }
 </script>

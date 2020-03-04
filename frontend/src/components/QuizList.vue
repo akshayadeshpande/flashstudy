@@ -2,35 +2,34 @@
   <div>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-    <div class='cards'>
-        <li v-for="card in this.cards" v-bind:key="card._id">
-          <staticCard  v-bind:question="card.question"
-          v-bind:answer="card.answer" v-bind:id='card._id'>
+    <div class='cards' v-if="this.quizzes.length > 0">
+        <li v-for="quiz in this.quizzes" v-bind:key="quiz._id">
+          <staticCard  v-bind:question="quiz.correctScore"
+          v-bind:answer="quiz.incorrectScore" v-bind:id='quiz._id'>
           </staticCard>
-          <h1>dadsadsadsadA</h1>
         </li>
-        <addCardForm class="new-card-form" v-if="visibleForm" v-on:closeForm=closeForm()></addCardForm>
-        <fab :actions="fabActions" @newCard=openForm() @newQuiz=startQuiz()></fab>
     </div>
+    <div v-if="this.quizzes.length == 0">
+      <h5> No Completed Quizzes! </h5>
+    </div>
+    <quickMenu></quickMenu>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import staticCard from './StaticCard'
-import fab from 'vue-fab'
-import addCardForm from './AddCardForm'
+import quickMenu from './QuickMenu'
 
 export default {
   name: 'CardList',
   components: {
     staticCard,
-    fab,
-    addCardForm
+    quickMenu
   },
   data () {
     return {
-      cards: null,
+      quizzes: [],
       errored: false,
       visibleForm: false,
       fabActions: [
@@ -46,32 +45,13 @@ export default {
     }
   },
   mounted () {
-    axios.get('/cards')
+    axios.get('/quizzes')
       .then(response => {
-        this.cards = response.data
+        this.quizzes = response.data
       }).catch(error => {
         console.log(error)
         this.errored = true
       })
-  },
-  methods: {
-    closeForm: function () {
-      this.visibleForm = false
-    },
-    openForm: function () {
-      this.visibleForm = true
-    },
-    startQuiz: function () {
-      axios.post('/quizzes', {
-        date: new Date()
-      })
-        .then(response => {
-          console.log(response)
-        }).catch(error => {
-          console.log(error)
-          this.errored = true
-        })
-    }
   }
 }
 </script>
